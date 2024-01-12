@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class MoviesController extends Controller
+class MovieController extends Controller
 {
-    public function index($type = null)
+    public function index($type = null, $id = null)
     {
-        if ($type === null) {
+        if ($type === null && $id === null) {
             // Shows All Movies
             $movies = Movie::all();
 
@@ -28,7 +28,7 @@ class MoviesController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif ($type === 'new') {
+        } elseif ($type === 'new' && $id === null) {
 
             // Shows New Movies
 
@@ -49,7 +49,7 @@ class MoviesController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif ($type === 'latest') {
+        } elseif ($type === 'latest' && $id === null) {
 
             // Shows Latest Movies
 
@@ -68,7 +68,25 @@ class MoviesController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } else {
+        } elseif($type === 'individual' && $id !== null) {
+            // Shows Individual Movies
+
+            $movies = Movie::with(['genre', 'status'])
+                ->where('id', $id)
+                ->get();
+
+            if ($movies->count() > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'data' => $movies
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No Movie Records Found'
+                ], 404);
+            }
+        }else {
 
             // If parameters are wrong
 
