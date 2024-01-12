@@ -44,4 +44,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profileImage()
+    {
+        return $this->hasOne(ProfileImage::class, 'id', 'img_id');
+    }
 }
