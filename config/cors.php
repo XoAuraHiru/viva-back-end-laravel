@@ -14,12 +14,15 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
-
+    
     'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'https://vivafront.xoaurahiru.com')],
+    'allowed_origins' => [
+        'http://vivafront.xoaurahiru.com',
+        'https://vivafront.xoaurahiru.com',
+    ],
 
     'allowed_origins_patterns' => [],
 
