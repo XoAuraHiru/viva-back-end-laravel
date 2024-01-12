@@ -8,11 +8,13 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Type\Integer;
 
 class MovieController extends Controller
 {
-    public function index($type = null, $id = null)
+    public function index( $type = null, $id = null)
     {
+
         if ($type === null && $id === null) {
             // Shows All Movies
             $movies = Movie::all();
