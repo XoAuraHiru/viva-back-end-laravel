@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -34,6 +35,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => 0,
             'img_id' => null,
+            'api_token' => Str::random(60),
         ]);
 
         event(new Registered($user));
