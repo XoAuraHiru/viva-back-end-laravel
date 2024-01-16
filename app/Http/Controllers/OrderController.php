@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Stmt\TryCatch;
 
 class OrderController extends Controller
 {
@@ -25,10 +26,17 @@ class OrderController extends Controller
             'message' => 'Reservation Created! User ' . $clientIP
         ];
 
-        Mail::to('astronomyhirunchamara@gmail.com')->send(new PaymentNotification($content));
+        try {
+            Mail::to('astronomyhirunchamara@gmail.com')->send(new PaymentNotification($content));
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'An error occurred while sending the email: ' . $e->getMessage()
+            ], 500);
+        }
 
 
-        $seats = json_decode($request->seats, true);
+        $seats = $request->seats;
         $shedule = $request->shedule_id;
 
         DB::beginTransaction();
