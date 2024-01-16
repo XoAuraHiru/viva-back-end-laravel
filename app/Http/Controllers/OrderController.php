@@ -86,6 +86,10 @@ class OrderController extends Controller
                     ->join('seat_type', 'seat_type.id', '=', 'seat.seat_type')
                     ->sum('seat_type.price');
 
+                DB::table('order')
+                    ->where('order_id', $order_id)
+                    ->update(['amount' => $total_amount]);
+
                 DB::commit();
 
                 dispatch(new CheckOrderStatus($order_id))->delay(now()->addMinutes(10));
@@ -105,6 +109,32 @@ class OrderController extends Controller
                     'message' => 'An error occurred while processing the order: ' . $e->getMessage()
                 ], 500);
             }
+        }
+    }
+
+    public function index($order_id = null)
+    {
+        if ($order_id !== null) {
+            $order = DB::table('order')
+                ->where('order_id', $order_id)
+                ->get();
+
+            if ($order->count() > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'data' => $order
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No Order Records Found'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No Order Records Found'
+            ], 404);
         }
     }
 }
