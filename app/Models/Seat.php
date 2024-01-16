@@ -20,6 +20,6 @@ class Seat extends Model
 
     public function type()
     {
-        return $this->belongsTo(SeatType::class);
+        return $this->belongsTo(SeatType::class, 'seat_type');
     }
 }
