@@ -67,7 +67,7 @@ class OrderController extends Controller
                     ]);
                 }
 
-                $data = DB::table('reservations')
+                $order = DB::table('reservations')
                     ->where('order_id', $order_id)
                     ->join('seat', 'seat.id', '=', 'reservations.seat_id')
                     ->get();
@@ -92,14 +92,18 @@ class OrderController extends Controller
 
                 DB::commit();
 
+                $data = [
+                    'order_id' => $order_id,
+                    'order' => $order,
+                    'total_amount' => $total_amount,
+                    'shedule' => $shedule,
+                ];
+
                 dispatch(new CheckOrderStatus($order_id))->delay(now()->addMinutes(10));
 
                 return response()->json([
                     'status' => 200,
                     'data' => $data,
-                    'shedule' => $shedule,
-                    'total_amount' => $total_amount,
-                    'order_id' => $order_id,
                 ], 200);
             } catch (\Exception $e) {
                 DB::rollback();
