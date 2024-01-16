@@ -27,3 +27,4 @@ Route::post('/movie/add', [MovieController::class, 'store']);
 Route::get('/shows/{type?}/{id?}', [SheduleController::class, 'index']);
 Route::get('/seats', [SeatController::class, 'index']);
 Route::post('/order/create', [OrderController::class, 'createOrder']);
+Route::get('/order/{id}', [OrderController::class, 'index']);
