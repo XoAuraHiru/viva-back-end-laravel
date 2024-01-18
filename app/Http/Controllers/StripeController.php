@@ -17,6 +17,10 @@ class StripeController extends Controller
                 'amount' => $request->input('amount'),
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
+                'metadata' => [
+                    'order_id' => $request->input('orderID'),
+                    'user_id' => $request->input('userID'),
+                ],
             ]);
 
             return response()->json([
