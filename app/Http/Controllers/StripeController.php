@@ -47,7 +47,7 @@ class StripeController extends Controller
                     config('services.stripe.webhook_secret')
                 );
             } catch (\Exception $e) {
-                return response()->json(['message' => 'Webhook request error'], 400);
+                return response()->json(['message' => 'Webhook request error' . $e], 400);
             }
 
             switch ($event->type) {
@@ -62,7 +62,7 @@ class StripeController extends Controller
                         $order->paid_at = date('Y-m-d H:i:s');
                         $order->save();
                     } catch (\Exception $e) {
-                        return response()->json(['message' => 'Webhook error: Failed to update order'], 500);
+                        return response()->json(['message' => 'Webhook error: Failed to update order' . $e], 500);
                     }
                     break;
                     // ... handle other events as needed
@@ -71,7 +71,7 @@ class StripeController extends Controller
             return response()->json(['message' => 'Webhook received'], 200);
         } catch (\Exception $e) {
             // Log errors and return a generic response
-            return response()->json(['message' => 'Webhook error'], 500);
+            return response()->json(['message' => 'Webhook error' . $e], 500);
         }
     }
 }
