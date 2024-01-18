@@ -31,3 +31,4 @@ Route::post('/order/create', [OrderController::class, 'createOrder']);
 Route::get('/order/{id}', [OrderController::class, 'index']);
 
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent']);
+Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
