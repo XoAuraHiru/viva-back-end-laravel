@@ -11,12 +11,11 @@ class StripeController extends Controller
     public function createPaymentIntent(Request $request)
     {
         try {
-            Stripe::setApiKey(config('services.stripe.secret')); // Set your secret key
+            Stripe::setApiKey(config('services.stripe.secret'));
 
-            // Create a PaymentIntent on Stripe's servers
             $intent = PaymentIntent::create([
                 'amount' => $request->input('amount'),
-                'currency' => 'usd', // Adjust currency as needed
+                'currency' => 'usd',
                 'payment_method_types' => ['card'],
             ]);
 

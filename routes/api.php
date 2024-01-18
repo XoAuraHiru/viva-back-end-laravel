@@ -4,6 +4,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\SheduleController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,5 @@ Route::get('/shows/{type?}/{id?}', [SheduleController::class, 'index']);
 Route::get('/seats', [SeatController::class, 'index']);
 Route::post('/order/create', [OrderController::class, 'createOrder']);
 Route::get('/order/{id}', [OrderController::class, 'index']);
+
+Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent']);
