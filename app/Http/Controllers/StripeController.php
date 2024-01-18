@@ -15,12 +15,12 @@ class StripeController extends Controller
             Stripe::setApiKey(config('services.stripe.secret'));
 
             $intent = PaymentIntent::create([
-                'amount' => $request->input('amount'),
+                'amount' => $request->amount,
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
                 'metadata' => [
-                    'order_id' => $request->input('orderID'),
-                    'user_id' => $request->input('userID'),
+                    'order_id' => $request->orderID,
+                    'user_id' => $request->userID,
                 ],
             ]);
 
