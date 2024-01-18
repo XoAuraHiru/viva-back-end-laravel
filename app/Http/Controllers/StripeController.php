@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
+use Stripe\Webhook;
 
 class StripeController extends Controller
 {
@@ -37,7 +38,17 @@ class StripeController extends Controller
     public function handleWebhook(Request $request)
     {
         try {
-            $event = Stripe::webhooks()->constructEvent($request->all(), $request->getContent(), $request->header('stripe-signature'));
+
+            try {
+                $event = Webhook::constructEvent(
+                    $request->all(),
+                    $request->getContent(),
+                    $request->header('stripe-signature'),
+                    config('services.stripe.webhook_secret')
+                );
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Webhook error'], 400);
+            }
 
             switch ($event->type) {
                 case 'payment_intent.succeeded':
