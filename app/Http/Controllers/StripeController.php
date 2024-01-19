@@ -39,11 +39,14 @@ class StripeController extends Controller
     {
         try {
 
+            $payload = @file_get_contents('php://input');
+            $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+
             try {
                 $event = Webhook::constructEvent(
                     $request->all(),
                     $request->getContent(),
-                    $request->header('HTTP_STRIPE_SIGNATURE'),
+                    $sig_header,
                     config('services.stripe.webhook_secret')
                 );
             } catch (\Exception $e) {
