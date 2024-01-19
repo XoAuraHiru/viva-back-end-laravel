@@ -38,17 +38,14 @@ class StripeController extends Controller
     public function handleWebhook(Request $request)
     {
         try {
-
+            $endpoint_secret = 'services.stripe.webhook_secret';
             $payload = @file_get_contents('php://input');
             $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
             try {
-                $event = Webhook::constructEvent(
-                    $request->all(),
-                    $request->getContent(),
-                    $sig_header,
-                    config('services.stripe.webhook_secret')
-                );
+                $event = \Stripe\Webhook::constructEvent(
+                    $payload, $sig_header, $endpoint_secret
+                  );
             } catch (\Exception $e) {
                 return response()->json(['message' => 'Webhook request error' . $e], 400);
             }
