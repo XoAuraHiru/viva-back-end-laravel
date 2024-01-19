@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\CheckOrderStatus;
 use App\Mail\PaymentNotification;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -139,6 +140,36 @@ class OrderController extends Controller
                 'status' => 404,
                 'message' => 'No Order Records Found'
             ], 404);
+        }
+    }
+
+    public function getUserOrders(){
+
+        $user_id = Auth::user()->id;
+    
+        if($user_id !== null){
+
+            $orders = Order::where('user_id', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get();
+
+            if($orders->count() > 0){
+                return response()->json([
+                    'status' => 200,
+                    'data' => $orders
+                ], 200);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No Order Records Found'
+                ], 404);
+            }
+        }else{
+            return response()->json([
+                'status' => 401,
+                'message' => 'User Not Logged In'
+            ], 401);
         }
     }
 }
