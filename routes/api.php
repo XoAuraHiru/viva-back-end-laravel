@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\SheduleController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,4 @@ Route::get('/user/orders', [OrderController::class, 'getUserOrders']);
 
 Route::get('/admin/orders', [OrderController::class, 'getOrders']);
 Route::delete('/admin/order/{id}', [OrderController::class, 'deleteOrder']);
+Route::get('/admin/ticket/{id}', [TicketController::class, 'viewTickets']);
