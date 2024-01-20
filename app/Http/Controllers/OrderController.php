@@ -172,4 +172,23 @@ class OrderController extends Controller
             ], 401);
         }
     }
+
+    public function getOrders(){
+
+        $orders = Order::orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        if($orders->count() > 0){
+            return response()->json([
+                'status' => 200,
+                'data' => $orders
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'No Order Records Found'
+            ], 404);
+        }
+    }
 }
