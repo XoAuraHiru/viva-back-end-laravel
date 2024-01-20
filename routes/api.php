@@ -35,3 +35,4 @@ Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
 Route::get('/user/orders', [OrderController::class, 'getUserOrders']);
 
 Route::get('/admin/orders', [OrderController::class, 'getOrders']);
+Route::delete('/admin/order/{id}', [OrderController::class, 'deleteOrder']);
