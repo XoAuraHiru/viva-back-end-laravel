@@ -175,7 +175,8 @@ class OrderController extends Controller
 
     public function getOrders(){
 
-        $orders = Order::orderBy('created_at', 'desc')
+        $orders = Order::with('user')
+            ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
 
