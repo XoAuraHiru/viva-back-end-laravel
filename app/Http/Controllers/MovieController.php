@@ -12,7 +12,7 @@ use Ramsey\Uuid\Type\Integer;
 
 class MovieController extends Controller
 {
-    public function index( $type = null, $id = null)
+    public function index($type = null, $id = null)
     {
 
         if ($type === null && $id === null) {
@@ -70,7 +70,7 @@ class MovieController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif($type === 'individual' && $id !== null) {
+        } elseif ($type === 'individual' && $id !== null) {
             // Shows Individual Movies
 
             $movies = Movie::with(['genre', 'status'])
@@ -88,7 +88,7 @@ class MovieController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        }else {
+        } else {
 
             // If parameters are wrong
 
@@ -102,11 +102,10 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         try {
-
             $validated = $request->validate([
                 'name' => 'required|max:255',
                 'year' => 'required|date_format:Y',
-                'genre' => 'required|integer',
+                'genre' => 'required|array',
                 'description' => 'required|max:255',
                 'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
@@ -123,16 +122,17 @@ class MovieController extends Controller
             $code = $this->createUniqueCode();
 
             try {
-                Movie::create([
+                $movie = Movie::create([
                     'name' => $validated['name'],
                     'year' => $validated['year'],
-                    'genre_id' => $validated['genre'],
                     'description' => $validated['description'],
                     // TODO: Add a method for inputing cast later
                     'cast' => NULL,
                     'banner_img' => '/storage/' . $path,
                     'code' => $code,
                 ]);
+                
+                $movie->genres()->attach($validated['genre']);
 
                 DB::commit();
             } catch (Exception $exception) {
@@ -142,12 +142,12 @@ class MovieController extends Controller
 
             return response()->json(['success' => 'Movie saved successfully'], 200);
         } catch (Exception $exception) {
-
             DB::rollback();
             Log::error("Error updating movie: " . $exception->getMessage());
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
 
 
 
@@ -238,7 +238,7 @@ class MovieController extends Controller
     public function createUniqueCode()
     {
         $code = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-        if(Movie::where('code', $code)->exists()) {
+        if (Movie::where('code', $code)->exists()) {
             return $this->createUniqueCode();
         } else {
             return $code;
