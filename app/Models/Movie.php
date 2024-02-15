@@ -21,7 +21,8 @@ class Movie extends Model
         'rating',
         'status_id',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'code'
     ];
 
     public function genre()

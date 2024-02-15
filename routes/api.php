@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('/movies/{type?}/{id?}', [MovieController::class, 'index']);
-Route::post('/movie/add', [MovieController::class, 'store']);
+
 Route::get('/shows/{type?}/{id?}', [SheduleController::class, 'index']);
 Route::get('/seats', [SeatController::class, 'index']);
 Route::post('/order/create', [OrderController::class, 'createOrder']);
@@ -38,3 +38,4 @@ Route::get('/user/orders', [OrderController::class, 'getUserOrders']);
 Route::get('/admin/orders', [OrderController::class, 'getOrders']);
 Route::delete('/admin/order/{id}', [OrderController::class, 'deleteOrder']);
 Route::get('/admin/ticket/{id}', [TicketController::class, 'viewTickets']);
+Route::post('/admin/movie/add', [MovieController::class, 'store']);

@@ -120,6 +120,8 @@ class MovieController extends Controller
                 $path = null;
             }
 
+            $code = $this->createUniqueCode();
+
             try {
                 Movie::create([
                     'name' => $validated['name'],
@@ -129,6 +131,7 @@ class MovieController extends Controller
                     // TODO: Add a method for inputing cast later
                     'cast' => NULL,
                     'banner_img' => '/storage/' . $path,
+                    'code' => $code,
                 ]);
 
                 DB::commit();
@@ -230,5 +233,15 @@ class MovieController extends Controller
             ->get();
 
         return $suggested_movies;
+    }
+
+    public function createUniqueCode()
+    {
+        $code = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+        if(Movie::where('code', $code)->exists()) {
+            return $this->createUniqueCode();
+        } else {
+            return $code;
+        }
     }
 }
