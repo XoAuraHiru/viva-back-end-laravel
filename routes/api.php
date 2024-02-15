@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SeatController;
@@ -25,6 +26,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('/movies/{type?}/{id?}', [MovieController::class, 'index']);
+
+Route::get('/genres', [GenreController::class, 'view']);
 
 Route::get('/shows/{type?}/{id?}', [SheduleController::class, 'index']);
 Route::get('/seats', [SeatController::class, 'index']);
