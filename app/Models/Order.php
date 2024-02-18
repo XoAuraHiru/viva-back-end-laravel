@@ -11,10 +11,11 @@ class Order extends Model
 
     protected $table = 'order';
 
-    protected $primaryKey = 'order_id';
+    protected $primaryKey = 'order_id'; 
 
     protected $fillable = [
         'created_at',
+        'order_no',
         'paid_status',
         'user_id',
         'paid_at',

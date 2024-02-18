@@ -41,10 +41,13 @@ class OrderController extends Controller
             DB::beginTransaction();
 
             try {
+                $order_no = $this->createUniqueCode();
+
                 $order_id = DB::table('order')->insertGetId([
                     'created_at' => Carbon::now('Asia/Colombo'),
                     'paid_status' => 0,
                     'user_id' => Auth::id(),
+                    'order_no' => $order_no,
                 ]);
 
                 foreach ($seats as $seat) {
@@ -209,6 +212,16 @@ class OrderController extends Controller
                 'status' => 404,
                 'message' => 'Order Not Found'
             ], 404);
+        }
+    }
+
+    public function createUniqueCode()
+    {
+        $code = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 15);
+        if (Order::where('id', $code)->exists()) {
+            return $this->createUniqueCode();
+        } else {
+            return $code;
         }
     }
 }
