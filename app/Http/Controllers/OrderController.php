@@ -98,6 +98,7 @@ class OrderController extends Controller
 
                 $data = [
                     'order_id' => $order_id,
+                    'order_no' => $order_no,
                     'order' => $order,
                     'total_amount' => $total_amount,
                     'shedule' => $shedule,
