@@ -12,10 +12,10 @@ use Ramsey\Uuid\Type\Integer;
 
 class MovieController extends Controller
 {
-    public function index($type = null, $id = null)
+    public function index($type = null, $code = null)
     {
 
-        if ($type === null && $id === null) {
+        if ($type === null && $code === null) {
             // Shows All Movies
             $movies = Movie::all();
 
@@ -30,7 +30,7 @@ class MovieController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif ($type === 'new' && $id === null) {
+        } elseif ($type === 'new' && $code === null) {
 
             // Shows New Movies
 
@@ -51,7 +51,7 @@ class MovieController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif ($type === 'latest' && $id === null) {
+        } elseif ($type === 'latest' && $code === null) {
 
             // Shows Latest Movies
 
@@ -70,11 +70,11 @@ class MovieController extends Controller
                     'message' => 'No Movie Records Found'
                 ], 404);
             }
-        } elseif ($type === 'individual' && $id !== null) {
+        } elseif ($type === 'individual' && $code !== null) {
             // Shows Individual Movies
 
             $movies = Movie::with(['genre', 'status'])
-                ->where('id', $id)
+                ->where('code', $code)
                 ->get();
 
             if ($movies->count() > 0) {
