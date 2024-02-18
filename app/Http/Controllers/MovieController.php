@@ -17,7 +17,8 @@ class MovieController extends Controller
 
         if ($type === null && $code === null) {
             // Shows All Movies
-            $movies = Movie::all();
+            $movies = Movie::with(['genre', 'status'])
+                ->get();
 
             if ($movies->count() > 0) {
                 return response()->json([
@@ -131,7 +132,7 @@ class MovieController extends Controller
                     'banner_img' => '/storage/' . $path,
                     'code' => $code,
                 ]);
-                
+
                 $movie->genres()->attach($validated['genre']);
 
                 DB::commit();
