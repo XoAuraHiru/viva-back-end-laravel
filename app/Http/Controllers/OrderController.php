@@ -121,11 +121,11 @@ class OrderController extends Controller
         }
     }
 
-    public function index($order_id = null)
+    public function index($order_no = null)
     {
-        if ($order_id !== null) {
+        if ($order_no !== null) {
             $order = DB::table('order')
-                ->where('order_id', $order_id)
+                ->where('order_no', $order_no)
                 ->get();
 
             if ($order->count() > 0) {

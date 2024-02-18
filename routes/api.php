@@ -32,7 +32,7 @@ Route::get('/genres', [GenreController::class, 'view']);
 Route::get('/shows/{type?}/{id?}', [SheduleController::class, 'index']);
 Route::get('/seats', [SeatController::class, 'index']);
 Route::post('/order/create', [OrderController::class, 'createOrder']);
-Route::get('/order/{id}', [OrderController::class, 'index']);
+Route::get('/order/{order_no}', [OrderController::class, 'index']);
 
 Route::post('/create-payment-intent', [StripeController::class, 'createPaymentIntent']);
 Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook']);
