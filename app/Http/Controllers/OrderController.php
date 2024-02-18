@@ -218,7 +218,7 @@ class OrderController extends Controller
     public function createUniqueCode()
     {
         $code = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 15);
-        if (Order::where('id', $code)->exists()) {
+        if (Order::where('order_no', $code)->exists()) {
             return $this->createUniqueCode();
         } else {
             return $code;
